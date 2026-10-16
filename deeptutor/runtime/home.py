@@ -6,6 +6,8 @@ import os
 from pathlib import Path
 
 DEEPTUTOR_HOME_ENV = "DEEPTUTOR_HOME"
+# DotCortex product alias — same runtime home semantics as DEEPTUTOR_HOME.
+DOTCORTEX_HOME_ENV = "DOTCORTEX_HOME"
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -31,13 +33,17 @@ def get_runtime_home(home: str | Path | None = None) -> Path:
     Priority:
     1. Explicit *home* argument.
     2. ``DEEPTUTOR_HOME`` environment variable.
-    3. Current working directory.
+    3. ``DOTCORTEX_HOME`` (DotCortex alias for the same path).
+    4. Current working directory.
 
     The returned path is the workspace root; runtime data lives below
     ``<home>/data``.
     """
 
-    raw = home if home is not None else os.getenv(DEEPTUTOR_HOME_ENV)
+    if home is not None:
+        raw = home
+    else:
+        raw = os.getenv(DEEPTUTOR_HOME_ENV) or os.getenv(DOTCORTEX_HOME_ENV)
     if raw is None or str(raw).strip() == "":
         return Path.cwd().resolve()
     return Path(raw).expanduser().resolve()
@@ -51,6 +57,7 @@ def get_runtime_data_root(home: str | Path | None = None) -> Path:
 
 __all__ = [
     "DEEPTUTOR_HOME_ENV",
+    "DOTCORTEX_HOME_ENV",
     "PACKAGE_ROOT",
     "get_runtime_home",
     "get_runtime_data_root",

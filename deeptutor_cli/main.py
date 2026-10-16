@@ -29,9 +29,27 @@ from .workspace_cmd import register as register_workspace
 set_mode(RunMode.CLI)
 configure_logging(console_stream=sys.stderr)
 
+
+def _cli_prog_name() -> str:
+    """``dotcortex`` when that console script was used; else ``deeptutor``."""
+    base = Path(sys.argv[0]).name.lower()
+    # Windows may append .exe; entry points may be wrapped.
+    stem = base[:-4] if base.endswith(".exe") else base
+    if stem == "dotcortex" or stem.startswith("dotcortex-"):
+        return "dotcortex"
+    return "deeptutor"
+
+
+PROG_NAME = _cli_prog_name()
+_DOTCORTEX_CLI = PROG_NAME == "dotcortex"
+
 app = typer.Typer(
-    name="deeptutor",
-    help="DeepTutor CLI – agent-first interface for capabilities, tools, and knowledge.",
+    name=PROG_NAME,
+    help=(
+        "DotCortex CLI – learn while you build (fork of DeepTutor)."
+        if _DOTCORTEX_CLI
+        else "DeepTutor CLI – agent-first interface for capabilities, tools, and knowledge."
+    ),
     no_args_is_help=True,
     add_completion=False,
 )
@@ -136,7 +154,7 @@ def start(
     detach: bool = typer.Option(
         False,
         "--detach",
-        help="Run outside the current console; stop later with `deeptutor stop`.",
+        help=f"Run outside the current console; stop later with `{PROG_NAME} stop`.",
     ),
     open_browser: bool = typer.Option(
         True,
@@ -154,7 +172,7 @@ def start(
 def stop(
     home: Path | None = typer.Option(None, "--home", help="Runtime workspace root."),
 ) -> None:
-    """Stop a DeepTutor launcher started with ``--detach``."""
+    """Stop a launcher started with ``--detach``."""
     from deeptutor.runtime.launcher import stop as stop_web
 
     if not stop_web(home=home):

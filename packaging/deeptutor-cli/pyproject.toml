@@ -70,6 +70,7 @@ dependencies = [
 
 [project.scripts]
 deeptutor = "deeptutor_cli.main:main"
+dotcortex = "deeptutor_cli.main:main"
 
 [tool.setuptools]
 package-dir = {"" = "../.."}

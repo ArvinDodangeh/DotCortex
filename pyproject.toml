@@ -95,6 +95,8 @@ dependencies = [
 
 [project.scripts]
 deeptutor = "deeptutor_cli.main:main"
+# DotCortex product alias — same entry point; keeps `deeptutor` for upstream merges.
+dotcortex = "deeptutor_cli.main:main"
 deeptutor-export-frontend-contracts = "deeptutor.api.contracts.export:main"
 
 [project.entry-points."deeptutor.reading_extensions"]
