@@ -1,0 +1,53 @@
+---
+description: DotCortex extension-first rules — change product without destroying DeepTutor architecture
+alwaysApply: true
+---
+
+# DotCortex — extend, don’t rewrite
+
+This repo is a fork of **HKUDS/DeepTutor** (Apache 2.0). DotCortex product work must stay mergeable with `upstream` and must not invent parallel systems when DeepTutor already has a hook.
+
+## Before any change
+
+1. **Search first** — find the existing extension point (theme tokens, capability, tool, settings section, RAG pipeline, mastery policy).
+2. **Prefer extend** — add a variant, option, module, or thin adapter.
+3. **Only then invent** — new folders under `dotcortex/` when no hook exists.
+4. **Keep diffs small** in `deeptutor/` and `web/` core files so `git merge upstream/main` stays sane.
+
+## Where new code goes
+
+| Kind of work | Put it here |
+|---|---|
+| Product-only Python (MCP, skills map API, gap logic) | `dotcortex/` (new package) + thin register hook in DeepTutor |
+| Product-only React surfaces | `web/features/dotcortex/` or `web/components/dotcortex/` |
+| Brand / theme | Extend existing theme system (see below) — do **not** add a second theme engine |
+| Mastery / learning rules | Prefer policy/tools hooks; don’t replace the whole mastery loop unless intentional |
+| Config / docs for us | `dotcortex/docs/` |
+
+## Theme (example — do this, not vibe CSS)
+
+DeepTutor already supports themes via:
+
+- `web/lib/theme.ts` — `Theme` union + `applyThemeToDocument`
+- `web/app/globals.css` — CSS variables per `.theme-*` / `.dark`
+- `web/features/settings/sections/AppearanceSettingsSection.tsx` — picker
+- `SettingsStore` / `AppShellContext` — persistence
+
+**To add Zehnium look:** add a new theme id (e.g. `zehnium`), map CSS variables (`--background`, `--primary`, …) to Zehnium tokens, register in the picker. Do **not** create a separate “theme section” or duplicate globals.
+
+## Hard don’ts
+
+- Don’t copy-paste a second Settings / Chat / Mastery stack “because it’s faster.”
+- Don’t rename the whole app in 50 files on day one — brand via theme + a few shell strings first.
+- Don’t delete upstream capabilities you aren’t replacing yet — hide or soft-gate in UI.
+- Don’t put secrets in the repo.
+
+## Upstream sync
+
+- Remotes: `origin` = DotCortex fork, `upstream` = `HKUDS/DeepTutor`
+- Work on `feature/*` branches; merge `upstream/main` often
+- On huge conflicts in core files: take upstream, re-apply a small DotCortex patch
+
+## Credit
+
+Keep Apache 2.0 `LICENSE` and HKU copyright. Product name may be DotCortex; do not claim official DeepTutor endorsement.
