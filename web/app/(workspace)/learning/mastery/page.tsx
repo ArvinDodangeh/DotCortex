@@ -70,8 +70,10 @@ function MasteryPathRoute() {
   // was previously a dead end.
   const scopedTopics = useMemo(() => {
     if (!scope) return topics;
-    const allowed = new Set(scope.refIds("mastery_path"));
-    return topics.filter((topic) => allowed.has(topic.path_id) && (topic.content_workspace_id ?? "") === activeWorkspaceId());
+    return topics.filter((topic) => {
+      const allowed = new Set(scope.refIds("mastery_path"));
+      return allowed.has(topic.path_id) && (topic.content_workspace_id ?? "") === activeWorkspaceId();
+    });
   }, [scope, topics]);
 
   return (

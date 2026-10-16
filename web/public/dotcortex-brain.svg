@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 280" fill="none" role="img" aria-label="DotCortex">
+  <!-- Quiet particle brain  transparent, no frame -->
+  <g fill="#FF6B00">
+    <!-- outer contour (orange) -->
+    <circle cx="168" cy="48" r="2.2" opacity=".95"/>
+    <circle cx="184" cy="52" r="1.8" opacity=".7"/>
+    <circle cx="200" cy="58" r="2" opacity=".85"/>
+    <circle cx="214" cy="68" r="1.6" opacity=".65"/>
+    <circle cx="226" cy="82" r="2.1" opacity=".9"/>
+    <circle cx="234" cy="98" r="1.7" opacity=".7"/>
+    <circle cx="238" cy="116" r="2" opacity=".85"/>
+    <circle cx="236" cy="134" r="1.5" opacity=".6"/>
+    <circle cx="228" cy="150" r="2" opacity=".9"/>
+    <circle cx="216" cy="164" r="1.8" opacity=".75"/>
+    <circle cx="200" cy="176" r="2.1" opacity=".85"/>
+    <circle cx="182" cy="186" r="1.6" opacity=".65"/>
+    <circle cx="162" cy="192" r="2" opacity=".9"/>
+    <circle cx="142" cy="190" r="1.7" opacity=".7"/>
+    <circle cx="124" cy="180" r="2" opacity=".85"/>
+    <circle cx="110" cy="164" r="1.8" opacity=".7"/>
+    <circle cx="100" cy="146" r="2.1" opacity=".9"/>
+    <circle cx="94" cy="126" r="1.6" opacity=".65"/>
+    <circle cx="92" cy="106" r="2" opacity=".85"/>
+    <circle cx="96" cy="88" r="1.7" opacity=".7"/>
+    <circle cx="106" cy="72" r="2" opacity=".9"/>
+    <circle cx="122" cy="58" r="1.8" opacity=".75"/>
+    <circle cx="140" cy="50" r="2.1" opacity=".9"/>
+    <circle cx="154" cy="46" r="1.6" opacity=".65"/>
+    <!-- gyri ridges -->
+    <circle cx="150" cy="70" r="1.5" opacity=".8"/>
+    <circle cx="168" cy="66" r="1.8" opacity=".9"/>
+    <circle cx="186" cy="72" r="1.4" opacity=".7"/>
+    <circle cx="202" cy="84" r="1.6" opacity=".85"/>
+    <circle cx="210" cy="102" r="1.5" opacity=".75"/>
+    <circle cx="206" cy="120" r="1.7" opacity=".85"/>
+    <circle cx="192" cy="136" r="1.4" opacity=".7"/>
+    <circle cx="174" cy="148" r="1.8" opacity=".9"/>
+    <circle cx="154" cy="154" r="1.5" opacity=".75"/>
+    <circle cx="136" cy="146" r="1.6" opacity=".8"/>
+    <circle cx="124" cy="128" r="1.4" opacity=".7"/>
+    <circle cx="122" cy="108" r="1.7" opacity=".85"/>
+    <circle cx="130" cy="90" r="1.5" opacity=".75"/>
+    <circle cx="144" cy="78" r="1.6" opacity=".85"/>
+  </g>
+  <g fill="#3AD0C8">
+    <!-- inner folds (cyan) -->
+    <circle cx="158" cy="96" r="1.4" opacity=".9"/>
+    <circle cx="170" cy="100" r="1.2" opacity=".7"/>
+    <circle cx="182" cy="108" r="1.5" opacity=".85"/>
+    <circle cx="188" cy="120" r="1.2" opacity=".65"/>
+    <circle cx="178" cy="130" r="1.4" opacity=".8"/>
+    <circle cx="164" cy="134" r="1.3" opacity=".75"/>
+    <circle cx="150" cy="128" r="1.5" opacity=".9"/>
+    <circle cx="144" cy="114" r="1.2" opacity=".7"/>
+    <circle cx="148" cy="102" r="1.3" opacity=".8"/>
+    <circle cx="160" cy="112" r="1.1" opacity=".6"/>
+    <circle cx="172" cy="116" r="1.2" opacity=".7"/>
+  </g>
+  <g fill="#FF6B00">
+    <!-- cerebellum / stem -->
+    <circle cx="148" cy="204" r="1.8" opacity=".85"/>
+    <circle cx="162" cy="208" r="2" opacity=".95"/>
+    <circle cx="176" cy="204" r="1.6" opacity=".75"/>
+    <circle cx="168" cy="220" r="1.5" opacity=".7"/>
+    <circle cx="160" cy="232" r="1.8" opacity=".9"/>
+    <circle cx="156" cy="244" r="1.4" opacity=".65"/>
+    <circle cx="154" cy="254" r="1.2" opacity=".55"/>
+    <!-- fill density -->
+    <circle cx="160" cy="86" r="1.2" opacity=".55"/>
+    <circle cx="176" cy="92" r="1.1" opacity=".5"/>
+    <circle cx="194" cy="98" r="1.2" opacity=".55"/>
+    <circle cx="198" cy="114" r="1.1" opacity=".45"/>
+    <circle cx="190" cy="128" r="1.2" opacity=".5"/>
+    <circle cx="176" cy="140" r="1.1" opacity=".45"/>
+    <circle cx="158" cy="142" r="1.2" opacity=".55"/>
+    <circle cx="140" cy="134" r="1.1" opacity=".45"/>
+    <circle cx="132" cy="118" r="1.2" opacity=".5"/>
+    <circle cx="136" cy="100" r="1.1" opacity=".45"/>
+    <circle cx="208" cy="92" r="1.3" opacity=".6"/>
+    <circle cx="218" cy="110" r="1.2" opacity=".5"/>
+    <circle cx="220" cy="128" r="1.3" opacity=".55"/>
+    <circle cx="212" cy="144" r="1.2" opacity=".5"/>
+    <circle cx="116" cy="96" r="1.2" opacity=".5"/>
+    <circle cx="112" cy="114" r="1.3" opacity=".55"/>
+    <circle cx="114" cy="134" r="1.2" opacity=".5"/>
+    <circle cx="128" cy="152" r="1.3" opacity=".55"/>
+    <circle cx="146" cy="168" r="1.4" opacity=".65"/>
+    <circle cx="166" cy="172" r="1.5" opacity=".7"/>
+    <circle cx="186" cy="166" r="1.3" opacity=".55"/>
+  </g>
+  <g fill="#5EEAD4" opacity=".55">
+    <circle cx="166" cy="108" r="1"/>
+    <circle cx="174" cy="124" r="1"/>
+    <circle cx="156" cy="120" r="1"/>
+    <circle cx="162" cy="126" r="0.9"/>
+  </g>
+</svg>

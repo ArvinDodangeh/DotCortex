@@ -34,7 +34,7 @@ export interface ResolvedNavLayout {
   customized: boolean;
 }
 
-export const NAV_LAYOUT_STORAGE_KEY = "deeptutor.sidebar.navLayout";
+export const NAV_LAYOUT_STORAGE_KEY = "dotcortex.sidebar.navLayout";
 export const SESSION_ORDER_STORAGE_KEY = "deeptutor.sidebar.sessionOrder";
 export const COLLAPSED_GROUPS_STORAGE_KEY = "deeptutor.sidebar.collapsedGroups";
 

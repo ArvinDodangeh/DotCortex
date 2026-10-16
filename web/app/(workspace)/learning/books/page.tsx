@@ -1,1 +1,5 @@
-export { default } from "./BooksRoute";
+import BooksRoute from "./BooksRoute";
+
+export default function BooksPage() {
+  return <BooksRoute />;
+}

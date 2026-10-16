@@ -24,14 +24,16 @@ Already supported: `light` | `dark` | `glass` | `snow` via `web/lib/theme.ts` + 
 
 Wrong: new “Theme Studio” page, parallel CSS framework, hardcoded colors in every component.
 
-## Backend / MCP / skills map
+## Backend / MCP / mastery pins
 
 - Implement under `dotcortex/` (Python package).
+- Pin store + map overview use mastery path ids (not a parallel skill table).
 - Register tools/routes with the existing DeepTutor tool/capability/MCP surfaces.
 - Do not fork a second FastAPI app unless you intentionally split deploy later.
 
 ## Frontend product surfaces
 
+- Home = chat (`CoachDesk`) + map icon overlay for pinned mastery paths.
 - New screens: `web/features/dotcortex/` or `web/components/dotcortex/`
 - Enter from existing sidebar / Learning Space with one link — don’t rebuild the shell.
 

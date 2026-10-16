@@ -107,7 +107,7 @@ it("loads conversation history while navigation remains usable, then preserves s
 
 it("keeps Home pinned even when a previous layout folded it into More", () => {
   localStorage.setItem(
-    "deeptutor.sidebar.navLayout",
+    "dotcortex.sidebar.navLayout",
     JSON.stringify({
       order: ["/partners", "/chat", "/space"],
       collapsed: ["/chat"],

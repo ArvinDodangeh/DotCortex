@@ -693,6 +693,16 @@ app.include_router(
     tags=["settings"],
 )
 app.include_router(settings.router, prefix="/api/settings", tags=["settings"], dependencies=_auth)
+from deeptutor.api.routers import dotcortex_pins as dotcortex_pins_router  # noqa: E402
+from dotcortex.pin_tool import register_pin_tool  # noqa: E402
+
+app.include_router(
+    dotcortex_pins_router.router,
+    prefix="/api/dotcortex",
+    tags=["dotcortex"],
+    dependencies=_auth,
+)
+register_pin_tool()
 app.include_router(
     workspace.settings_router,
     prefix="/api/settings/workspace",

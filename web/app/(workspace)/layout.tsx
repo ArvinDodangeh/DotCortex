@@ -7,6 +7,7 @@ import { ChatRuntimeProvider } from "@/features/chat";
 import { ReadingProvider } from "@/context/ReadingContext";
 import { Suspense } from "react";
 import { WorkspaceRuntimeBoundary } from "@/components/workspaces/WorkspaceRuntimeBoundary";
+import { DotCortexChrome } from "@/components/dotcortex/DotCortexChrome";
 
 export default function WorkspaceLayout({
   children,
@@ -23,9 +24,11 @@ export default function WorkspaceLayout({
             /chat → /chat/<id>, which remounts the page. The open document
             must not die with it. */}
               <ReadingProvider>
-                  <AppShell sidebar={<WorkspaceSidebar />}>
-                    <CapabilityGate>{children}</CapabilityGate>
-                  </AppShell>
+                  <DotCortexChrome>
+                    <AppShell sidebar={<WorkspaceSidebar />}>
+                      <CapabilityGate>{children}</CapabilityGate>
+                    </AppShell>
+                  </DotCortexChrome>
               </ReadingProvider>
             </ChatRuntimeProvider>
           </WorkspaceRuntimeBoundary>

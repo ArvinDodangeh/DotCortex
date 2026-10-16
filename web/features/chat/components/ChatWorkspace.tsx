@@ -62,6 +62,8 @@ import {
   useGeogebraTabOpener,
 } from "@/context/GeogebraTabContext";
 import { BookmarkPlus, ChevronRight, Download, FolderOpen, PanelRight } from "lucide-react";
+import { MasteryMapTrigger } from "@/components/dotcortex/MasteryMapTrigger";
+import { DotCortexBrainMark } from "@/components/dotcortex/DotCortexBrainMark";
 import Link from "next/link";
 import {
   useChatStateAdapter,
@@ -2483,6 +2485,7 @@ export default function ChatWorkspace() {
                   label={t("Activity")}
                   title={t("Session activity, attachments & previews")}
                 />
+                <MasteryMapTrigger />
               </div>
             </div>
             <div className="flex w-full flex-1 min-h-0 flex-col">
@@ -2498,15 +2501,8 @@ export default function ChatWorkspace() {
                 </div>
               ) : !hasMessages ? (
                 <div className="flex w-full flex-1 min-h-0 items-end justify-center pb-14 animate-fade-in px-6">
-                  <div className="w-full max-w-[960px] flex items-center justify-center gap-4">
-                    <img
-                      src="/logo_black.png"
-                      alt="DeepTutor"
-                      width={40}
-                      height={40}
-                      className="h-10 w-10 select-none"
-                      draggable={false}
-                    />
+                  <div className="flex w-full max-w-[960px] items-center justify-center gap-4">
+                    <DotCortexBrainMark className="h-14 w-14" />
                     <h1 className="font-serif text-[40px] font-medium leading-[1.1] tracking-[-0.015em] text-[var(--foreground)]">
                       {t(welcomeGreeting)}
                     </h1>

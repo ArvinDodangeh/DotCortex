@@ -10,6 +10,7 @@ import {
   type FailedSubmissionRecord,
 } from "@/lib/failed-submissions";
 import { randomUuid } from "@/lib/random-uuid";
+import { withMasteryPrefix } from "@/lib/dotcortex-mastery";
 import { newCommandId } from "@/contracts/parse/turn-command";
 
 import React, {
@@ -2990,7 +2991,7 @@ export function ChatStateAdapterProvider({
       return sendThroughRunner(
         key,
         buildStartTurnInput({
-        content,
+        content: withMasteryPrefix(content),
         clientSubmissionId: submissionId,
         tools: effectiveTools,
         capability: effectiveCapability,

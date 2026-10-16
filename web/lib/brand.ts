@@ -10,5 +10,9 @@ export const APP_DESCRIPTION =
 
 /** Square mark (sidebar / favicon). */
 export const APP_LOGO_SRC = "/logo.png";
-/** Wordmark next to the mark. */
+/** Legacy raster wordmark — prefer CSS text + APP_NAME beside the mark. */
 export const APP_BANNER_SRC = "/banner.png";
+/** Chat hero — Zehnium engraved brain (`logo_1`). */
+export const APP_BRAIN_HERO = "/dotcortex-hero.png";
+/** Full path SVG of the same mark (heavy). */
+export const APP_BRAIN_SVG = "/dotcortex-logo.svg";

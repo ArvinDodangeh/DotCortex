@@ -18,7 +18,7 @@ This repo is a fork of **HKUDS/DeepTutor** (Apache 2.0). DotCortex product work 
 
 | Kind of work | Put it here |
 |---|---|
-| Product-only Python (MCP, skills map API, gap logic) | `dotcortex/` (new package) + thin register hook in DeepTutor |
+| Product-only Python (MCP, mastery pins API, gap logic) | `dotcortex/` (new package) + thin register hook in DeepTutor |
 | Product-only React surfaces | `web/features/dotcortex/` or `web/components/dotcortex/` |
 | Brand / theme | Extend existing theme system (see below) — do **not** add a second theme engine |
 | Mastery / learning rules | Prefer policy/tools hooks; don’t replace the whole mastery loop unless intentional |

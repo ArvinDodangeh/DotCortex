@@ -1,5 +1,5 @@
-import ChatWorkspace from "@/features/chat/components/ChatWorkspace";
+import { CoachDesk } from "@/components/dotcortex/CoachDesk";
 
 export default function ChatSessionPage() {
-  return <ChatWorkspace />;
+  return <CoachDesk />;
 }
