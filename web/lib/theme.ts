@@ -5,9 +5,17 @@
 
 import { browserStorage } from "@/shared/storage";
 
-export type Theme = "light" | "dark" | "glass" | "snow";
+export type Theme = "light" | "dark" | "glass" | "snow" | "zehnium";
 
 export const THEME_STORAGE_KEY = "deeptutor-theme";
+
+const THEME_IDS: readonly Theme[] = [
+  "light",
+  "dark",
+  "glass",
+  "snow",
+  "zehnium",
+];
 
 type ThemeChangeListener = (theme: Theme) => void;
 const themeListeners = new Set<ThemeChangeListener>();
@@ -37,13 +45,8 @@ export function getStoredTheme(): Theme | null {
 
   try {
     const stored = browserStorage.readRaw("local", THEME_STORAGE_KEY);
-    if (
-      stored === "light" ||
-      stored === "dark" ||
-      stored === "glass" ||
-      stored === "snow"
-    ) {
-      return stored;
+    if ((THEME_IDS as readonly string[]).includes(stored)) {
+      return stored as Theme;
     }
   } catch (e) {
     // Silently fail - localStorage may be disabled
@@ -67,16 +70,11 @@ export function saveThemeToStorage(theme: Theme): boolean {
 }
 
 /**
- * Get system preference for theme.
- * Light systems get "snow" (the pure-white Default theme); dark systems
- * get "dark". Must stay in sync with the inline ThemeScript fallback.
+ * First-visit fallback when nothing is stored.
+ * DotCortex defaults to Zehnium (must match ThemeScript).
  */
 export function getSystemTheme(): Theme {
-  if (typeof window === "undefined") return "snow";
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "snow";
+  return "zehnium";
 }
 
 /**
@@ -87,7 +85,7 @@ export function applyThemeToDocument(theme: Theme): void {
 
   const html = document.documentElement;
 
-  html.classList.remove("dark", "theme-glass", "theme-snow");
+  html.classList.remove("dark", "theme-glass", "theme-snow", "theme-zehnium");
 
   if (theme === "dark") {
     html.classList.add("dark");
@@ -95,6 +93,8 @@ export function applyThemeToDocument(theme: Theme): void {
     html.classList.add("dark", "theme-glass");
   } else if (theme === "snow") {
     html.classList.add("theme-snow");
+  } else if (theme === "zehnium") {
+    html.classList.add("dark", "theme-zehnium");
   }
 }
 

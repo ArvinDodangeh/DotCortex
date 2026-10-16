@@ -69,10 +69,11 @@
 
 @layer base {
   /* ────────────────────────────────────────────────────────────────────────
-     Theme palettes — four families:
+     Theme palettes — five families:
        • Default (.theme-snow) → pure-white neutral greys, blue accent
        • Cream (:root) and Dark (.dark) → warm family, terracotta accent
        • Glass (.theme-glass) → translucent purple on near-black
+       • Zehnium (.theme-zehnium) → neuro-minimal near-black, orange accent
      Tokens that every theme must publish:
        --background, --foreground, --card / --popover (+ their -foreground),
        --primary (+ -foreground), --secondary, --muted (+ -foreground),
@@ -262,6 +263,55 @@
   .theme-glass .btn-primary:hover {
     box-shadow: 0 0 25px rgba(157, 80, 187, 0.6);
     transform: translateY(-1px);
+  }
+
+  /* Zehnium — DotCortex neuro-minimal (near-black + orange #FF6B00). */
+  .theme-zehnium {
+    color-scheme: dark;
+    --background: #0b0b0b;
+    --foreground: #f5f5f5;
+    --card: #141414;
+    --card-foreground: #f5f5f5;
+    --popover: #141414;
+    --popover-foreground: #f5f5f5;
+    --primary: #ff6b00;
+    --primary-foreground: #0b0b0b;
+    --secondary: #141414;
+    --secondary-foreground: #f5f5f5;
+    --muted: #1a1a1a;
+    --muted-foreground: #7f7f7f;
+    --accent: #1f1f1f;
+    --accent-foreground: #f5f5f5;
+    --destructive: #e10600;
+    --destructive-foreground: #f5f5f5;
+    --border: #2a2a2a;
+    --input: #2a2a2a;
+    --ring: #ff6b00;
+    --overlay: rgba(0, 0, 0, 0.65);
+    --success: #39ff14;
+    --success-foreground: #bbf7d0;
+    --success-surface: rgba(57, 255, 20, 0.12);
+    --warning: #ff6b00;
+    --warning-foreground: #ffedd5;
+    --warning-surface: rgba(255, 107, 0, 0.14);
+    --info: #7ba7ff;
+    --info-foreground: #bfdbfe;
+    --info-surface: rgba(59, 130, 246, 0.14);
+    --surface-raised: #1a1a1a;
+    --shadow-raised: 0 16px 44px rgba(0, 0, 0, 0.45);
+  }
+
+  .dark.theme-zehnium,
+  .theme-zehnium {
+    --folder-default: #7f7f7f;
+    --folder-blue: #5b8def;
+    --folder-teal: #2aa79c;
+    --folder-green: #39ff14;
+    --folder-amber: #ff6b00;
+    --folder-orange: #ff6b00;
+    --folder-rose: #e10600;
+    --folder-violet: #a78bfa;
+    --folder-slate: #6b7a90;
   }
 
   /* Collection folder tints (Immersive Reading). These are user-picked

@@ -13,7 +13,7 @@ export default function ThemeScript() {
       try {
         const stored = localStorage.getItem('deeptutor-theme');
 
-        document.documentElement.classList.remove('dark', 'theme-glass', 'theme-snow');
+        document.documentElement.classList.remove('dark', 'theme-glass', 'theme-snow', 'theme-zehnium');
 
         if (stored === 'dark') {
           document.documentElement.classList.add('dark');
@@ -21,18 +21,14 @@ export default function ThemeScript() {
           document.documentElement.classList.add('dark', 'theme-glass');
         } else if (stored === 'snow') {
           document.documentElement.classList.add('theme-snow');
+        } else if (stored === 'zehnium') {
+          document.documentElement.classList.add('dark', 'theme-zehnium');
         } else if (stored === 'light') {
           // already clean
         } else {
-          // No stored preference: Default (snow) for light systems,
-          // Dark for prefers-color-scheme: dark.
-          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('deeptutor-theme', 'dark');
-          } else {
-            document.documentElement.classList.add('theme-snow');
-            localStorage.setItem('deeptutor-theme', 'snow');
-          }
+          // DotCortex default: Zehnium (neuro-minimal dark).
+          document.documentElement.classList.add('dark', 'theme-zehnium');
+          localStorage.setItem('deeptutor-theme', 'zehnium');
         }
       } catch (e) {
         /* localStorage may be disabled */

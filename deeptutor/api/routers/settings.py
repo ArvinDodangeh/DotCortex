@@ -140,7 +140,7 @@ DEFAULT_UI_SETTINGS = {
     # interface.json, so the two readers of that file can't drift on what a
     # fresh install defaults to.
     **INTERFACE_DEFAULTS,
-    "sidebar_description": "✨ Data Intelligence Lab @ HKU",
+    "sidebar_description": "DotCortex · based on DeepTutor",
     "sidebar_nav_order": DEFAULT_SIDEBAR_NAV_ORDER,
     # User-toggleable chat tools. Default = all on; the /settings/tools page
     # is the single switchboard. Removed names (e.g. tools that ship later
@@ -172,7 +172,7 @@ class SidebarNavOrder(BaseModel):
 
 
 class UISettings(BaseModel):
-    theme: Literal["light", "dark", "glass", "snow"] = "snow"
+    theme: Literal["light", "dark", "glass", "snow", "zehnium"] = "zehnium"
     language: UiLanguage = "en"
     response_language: ResponseLanguage = "en"
     sidebar_description: Optional[str] = None
@@ -195,7 +195,7 @@ class UISettingsUpdate(BaseModel):
     # Same Literal domains as UISettings — a None default keeps them optional
     # for exclude_unset partial merges, but an explicit value is still validated
     # so PUT /ui cannot persist a theme/language the app can't render.
-    theme: Literal["light", "dark", "glass", "snow"] | None = None
+    theme: Literal["light", "dark", "glass", "snow", "zehnium"] | None = None
     language: UiLanguage | None = None
     response_language: ResponseLanguage | None = None
     sidebar_description: str | None = None
@@ -218,7 +218,7 @@ class ChatResponseTimeoutUpdate(BaseModel):
 
 
 class ThemeUpdate(BaseModel):
-    theme: Literal["light", "dark", "glass", "snow"]
+    theme: Literal["light", "dark", "glass", "snow", "zehnium"]
 
 
 class LanguageUpdate(BaseModel):
@@ -2161,6 +2161,7 @@ async def reset_settings():
 async def get_themes():
     return {
         "themes": [
+            {"id": "zehnium", "name": "Zehnium"},
             {"id": "snow", "name": "Default"},
             {"id": "light", "name": "Cream"},
             {"id": "dark", "name": "Dark"},

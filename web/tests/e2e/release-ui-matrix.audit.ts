@@ -11,7 +11,7 @@ const surfaces = [
   ["Co-Writer", "/co-writer"],
 ] as const;
 
-const themes = ["snow", "light", "dark", "glass"] as const;
+const themes = ["zehnium", "snow", "light", "dark", "glass"] as const;
 const languages = ["en", "zh"] as const;
 const viewports = [
   ["mobile", { width: 390, height: 844 }],

@@ -60,6 +60,14 @@ const PALETTES: Record<Theme, Palette> = {
     border: "rgba(255,255,255,0.12)",
     glass: true,
   },
+  zehnium: {
+    bg: "#0b0b0b",
+    fg: "#f5f5f5",
+    card: "#141414",
+    primary: "#ff6b00",
+    muted: "#1a1a1a",
+    border: "#2a2a2a",
+  },
 };
 
 // Renders a miniature DeepTutor UI mockup in the given theme's palette —
