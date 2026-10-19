@@ -16,6 +16,7 @@ import pytest
 from deeptutor.services.subagent import process as process_mod
 from deeptutor.services.subagent.claude_code import ClaudeCodeBackend
 from deeptutor.services.subagent.codex import CodexBackend
+from deeptutor.services.subagent.cursor import CursorBackend
 from deeptutor.services.subagent.config import (
     CONSULT_BUDGET_MAX,
     DEFAULT_CONSULT_BUDGET,
@@ -41,6 +42,61 @@ def test_claude_command_build_fresh_and_resume() -> None:
 
     resumed = backend._build_command("again", session_id="sess-1", config=cfg)
     assert "--resume" in resumed and "sess-1" in resumed
+
+
+def test_cursor_command_build_fresh_resume_force_sandbox() -> None:
+    backend = CursorBackend()
+    cfg = BackendConfig(
+        auto_approve=True,
+        sandbox="disabled",
+        model="sonnet-4-thinking",
+        system_prompt="be concise",
+        extra_args=["--approve-mcps"],
+    )
+    fresh = backend._build_command(
+        "hi", session_id=None, fresh_session=True, config=cfg
+    )
+    assert fresh[:3] == ["agent", "-p", "be concise\n\nhi"]
+    assert "--output-format" in fresh and "stream-json" in fresh
+    assert "--stream-partial-output" in fresh and "--trust" in fresh
+    assert "--force" in fresh
+    assert "--sandbox" in fresh and "disabled" in fresh
+    assert "--model" in fresh and "sonnet-4-thinking" in fresh
+    assert "--resume" not in fresh
+    assert "--approve-mcps" in fresh
+
+    resumed = backend._build_command(
+        "again", session_id="sess-c1", fresh_session=False, config=cfg
+    )
+    assert "--resume" in resumed and "sess-c1" in resumed
+    # System prompt is only prefixed on the fresh session.
+    assert resumed[2] == "again"
+
+
+def test_cursor_command_forwards_images_via_prompt() -> None:
+    backend = CursorBackend()
+    imgs = ["/tmp/dt-c/00_a.png", "/tmp/dt-c/01_b.png"]
+    cmd = backend._build_command(
+        "look",
+        session_id=None,
+        fresh_session=True,
+        config=BackendConfig(auto_approve=False),
+        images=imgs,
+    )
+    prompt = cmd[2]
+    assert "file tools" in prompt
+    assert "/tmp/dt-c/00_a.png" in prompt and "/tmp/dt-c/01_b.png" in prompt
+    assert "--force" not in cmd
+
+
+def test_cursor_ignores_codex_sandbox_default() -> None:
+    # BackendConfig.sandbox defaults to Codex's "workspace-write"; Cursor only
+    # accepts enabled|disabled, so the default must not leak a flag.
+    backend = CursorBackend()
+    cmd = backend._build_command(
+        "hi", session_id=None, fresh_session=True, config=BackendConfig()
+    )
+    assert "--sandbox" not in cmd
 
 
 def test_codex_command_build_sandbox_and_resume() -> None:
@@ -371,13 +427,19 @@ async def _drive(backend, events):
     async def emit(kind, text, raw, meta=None):
         emitted.append((kind, text))
 
-    if isinstance(backend, ClaudeCodeBackend):
+    if isinstance(backend, (ClaudeCodeBackend, CursorBackend)):
         assistant_text: list[str] = []
-        stream: dict = {"msg_id": "", "blocks": {}}
+        stream: dict = (
+            {"acc": "", "merge_id": "cursor:assistant"}
+            if isinstance(backend, CursorBackend)
+            else {"msg_id": "", "blocks": {}}
+        )
         for ev in events:
             await backend._handle_event(ev, result, assistant_text, stream, emit)
         if not result.final_text and assistant_text:
             result.final_text = "\n".join(assistant_text)
+        elif not result.final_text and stream.get("acc"):
+            result.final_text = str(stream["acc"]).strip()
     else:
         for ev in events:
             await backend._handle_event(ev, result, emit)
@@ -433,6 +495,81 @@ async def test_claude_falls_back_to_assistant_text_without_result() -> None:
     ]
     result, _ = await _drive(backend, events)
     assert result.final_text == "Partial thought."
+
+
+@pytest.mark.asyncio
+async def test_cursor_event_parsing_streams_tools_and_result() -> None:
+    backend = CursorBackend()
+    events = [
+        {
+            "type": "system",
+            "subtype": "init",
+            "session_id": "c1",
+            "model": "Composer",
+        },
+        {
+            "type": "assistant",
+            "session_id": "c1",
+            "timestamp_ms": 1,
+            "message": {"content": [{"type": "text", "text": "Hel"}]},
+        },
+        {
+            "type": "assistant",
+            "session_id": "c1",
+            "timestamp_ms": 2,
+            "message": {"content": [{"type": "text", "text": "lo"}]},
+        },
+        # Buffered flush before a tool call — duplicate, must be skipped.
+        {
+            "type": "assistant",
+            "session_id": "c1",
+            "timestamp_ms": 3,
+            "model_call_id": "mc1",
+            "message": {"content": [{"type": "text", "text": "Hello"}]},
+        },
+        {
+            "type": "tool_call",
+            "subtype": "started",
+            "call_id": "t1",
+            "session_id": "c1",
+            "tool_call": {"readToolCall": {"args": {"path": "README.md"}}},
+        },
+        {
+            "type": "tool_call",
+            "subtype": "completed",
+            "call_id": "t1",
+            "session_id": "c1",
+            "tool_call": {
+                "readToolCall": {
+                    "args": {"path": "README.md"},
+                    "result": {"success": {"totalLines": 12, "content": "# Hi"}},
+                }
+            },
+        },
+        # End-of-turn flush — duplicate, must be skipped.
+        {
+            "type": "assistant",
+            "session_id": "c1",
+            "message": {"content": [{"type": "text", "text": "Hello"}]},
+        },
+        {
+            "type": "result",
+            "subtype": "success",
+            "result": "Hello",
+            "session_id": "c1",
+            "is_error": False,
+        },
+    ]
+    result, emitted = await _drive(backend, events)
+    assert result.session_id == "c1"
+    assert result.final_text == "Hello"
+    kinds = [k for k, _ in emitted]
+    assert "log" in kinds and "text" in kinds and "tool" in kinds and "tool_result" in kinds
+    # Streaming deltas accumulate; duplicate flushes must not add extra rows.
+    text_rows = [t for k, t in emitted if k == "text"]
+    assert text_rows[-1] == "Hello"
+    assert text_rows.count("Hello") == 1
+    assert any("read(" in t or "Read(" in t or "README.md" in t for k, t in emitted if k == "tool")
 
 
 @pytest.mark.asyncio

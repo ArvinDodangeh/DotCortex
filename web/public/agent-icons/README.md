@@ -15,5 +15,7 @@ menus keep working offline. Do not redraw or substitute them with approximations
   packages/identity/mark.svg.
 - mimo-code.svg embeds the exact SVG bytes served by Xiaomi MiMo's official
   MiMo Code page at /static/mimo-code.a1594b207bbc4bee.svg.
+- cursor.png is the Cursor product icon supplied for the Cursor Agent CLI
+  connected-agent entry.
 
 Brand and trademark rights remain with their respective owners.

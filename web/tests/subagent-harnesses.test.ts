@@ -7,6 +7,7 @@ const readWebFile = (...parts: string[]) =>
   readFileSync(path.join(process.cwd(), ...parts), "utf8");
 
 const HARNESSES = [
+  { kind: "cursor", route: "cursor", label: "Cursor" },
   { kind: "grok", route: "grok", label: "Grok CLI" },
   { kind: "hermes", route: "hermes", label: "Hermes Agent" },
   { kind: "openclaw", route: "openclaw", label: "OpenClaw" },
@@ -48,6 +49,7 @@ test("Gemini CLI is retired and agent glyphs use official local assets", () => {
   assert.equal(existsSync(retiredRoute), false);
 
   for (const asset of [
+    "cursor.png",
     "kimi.svg",
     "opencode.svg",
     "mimo-code.svg",

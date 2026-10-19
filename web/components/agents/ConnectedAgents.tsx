@@ -25,6 +25,7 @@ type Lang = { zh: string; en: string };
 
 function backendLabel(kind: string): string {
   if (kind === "claude_code") return "Claude Code";
+  if (kind === "cursor") return "Cursor";
   if (kind === "codex") return "Codex";
   if (kind === "grok") return "Grok CLI";
   if (kind === "antigravity") return "Antigravity CLI";

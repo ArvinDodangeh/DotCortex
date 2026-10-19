@@ -33,6 +33,7 @@ import {
 import {
   ClaudeGlyph,
   CodexGlyph,
+  CursorGlyph,
   DeepSeekGlyph,
   GeminiGlyph,
   GrokGlyph,
@@ -314,6 +315,18 @@ const AGENT_CHILDREN: SettingsLeaf[] = [
     // Brand glyph shares the lucide call signature (size/className).
     icon: ClaudeGlyph as unknown as LucideIcon,
     tile: "bg-orange-500/10 text-orange-600 dark:text-orange-400",
+    adminOnly: true,
+  },
+  {
+    key: "agent-cursor",
+    href: "/settings#agent-cursor",
+    label: { zh: "Cursor", en: "Cursor" },
+    blurb: {
+      zh: "DeepTutor 调用本机 Cursor Agent CLI 时的模型与运行参数。",
+      en: "Model and run params for the local Cursor Agent CLI.",
+    },
+    icon: CursorGlyph as unknown as LucideIcon,
+    tile: "bg-zinc-500/10 text-zinc-800 dark:text-zinc-200",
     adminOnly: true,
   },
   {
@@ -626,6 +639,7 @@ const STORAGE_PATHS: Record<string, string> = {
   attachments: "data/user/settings/system.json",
   capabilities: "data/user/settings/main.yaml · agents.yaml",
   "agent-claude-code": "data/user/settings/subagent.json",
+  "agent-cursor": "data/user/settings/subagent.json",
   "agent-codex": "data/user/settings/subagent.json",
   "agent-grok": "data/user/settings/subagent.json",
   "agent-antigravity": "data/user/settings/subagent.json",

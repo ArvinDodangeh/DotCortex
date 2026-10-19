@@ -20,6 +20,8 @@ page's "sync" button just re-reads it:
 * **Hermes Agent / OpenClaw / DeepSeek Harness** accept free-text model ids.
   Their official reasoning surfaces are exposed as curated suggestions while
   still allowing the underlying config to carry newer values.
+* **Cursor** lists account models via ``agent --list-models`` (or ``agent
+  models``); sync re-runs that command. Free-text model ids remain allowed.
 
 Each backend kind maps to one options provider in ``_PROVIDERS`` — adding a
 backend means adding a provider here, nothing else changes.
@@ -266,6 +268,91 @@ async def _kimi_options() -> BackendOptions:
     )
 
 
+async def _list_cursor_models() -> list[ModelOption]:
+    """Parse ``agent --list-models`` / ``agent models`` output defensively.
+
+    Requires an authenticated Cursor CLI; on auth failure or timeout we return
+    an empty list and the settings UI still accepts a free-text model.
+    """
+    backend = get_backend("cursor")
+    cli = backend.cli_command if backend else "agent"
+    cmd = resolve_cli_command([cli, "--list-models"])
+    try:
+        process = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdin=asyncio.subprocess.DEVNULL,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        out, err = await asyncio.wait_for(process.communicate(), timeout=20.0)
+    except FileNotFoundError:
+        return []
+    except (TimeoutError, asyncio.TimeoutError):
+        return []
+    except Exception:  # pragma: no cover - defensive
+        logger.warning("failed to enumerate cursor models", exc_info=True)
+        return []
+    text = (out or b"").decode("utf-8", "replace")
+    if process.returncode not in (0, None):
+        # Auth errors land on stderr; treat as empty catalog.
+        detail = (err or b"").decode("utf-8", "replace").strip()
+        if detail:
+            logger.info("cursor --list-models unavailable: %s", detail[:200])
+        return []
+    models: list[ModelOption] = []
+    seen: set[str] = set()
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line or line.lower().startswith("error"):
+            continue
+        # Common shapes: bare slug, "slug — display", "slug  display", JSON rows.
+        if line.startswith("{"):
+            try:
+                obj = json.loads(line)
+            except (ValueError, TypeError):
+                continue
+            if not isinstance(obj, dict):
+                continue
+            slug = str(obj.get("slug") or obj.get("id") or obj.get("model") or "").strip()
+            if not slug or slug in seen:
+                continue
+            seen.add(slug)
+            models.append(
+                ModelOption(
+                    slug=slug,
+                    display_name=str(obj.get("display_name") or obj.get("name") or slug),
+                )
+            )
+            continue
+        # Split on 2+ spaces or an em/en dash separator.
+        parts = re.split(r"\s{2,}| — | – | - ", line, maxsplit=1)
+        slug = parts[0].strip()
+        if not slug or " " in slug or slug in seen:
+            continue
+        # Skip decorative headers.
+        if slug.lower() in {"model", "models", "name", "id"}:
+            continue
+        seen.add(slug)
+        display = parts[1].strip() if len(parts) > 1 else slug
+        models.append(ModelOption(slug=slug, display_name=display or slug))
+    return models
+
+
+async def _cursor_options() -> BackendOptions:
+    ok, version = await _probe("cursor")
+    models = await _list_cursor_models() if ok else []
+    return BackendOptions(
+        kind="cursor",
+        display_name="Cursor",
+        available=ok,
+        version=version if ok else "",
+        models=models,
+        efforts=[],
+        allow_custom_model=True,
+        detail="" if ok else (version or "agent CLI not found on PATH"),
+    )
+
+
 async def _grok_options() -> BackendOptions:
     backend = get_backend("grok")
     detected = await backend.detect() if backend else None
@@ -397,6 +484,7 @@ async def _deepseek_harness_options() -> BackendOptions:
 # One provider per backend kind — the discovery order is the settings order.
 _PROVIDERS: dict[str, Callable[..., Awaitable[BackendOptions]]] = {
     "claude_code": _claude_options,
+    "cursor": _cursor_options,
     "codex": _codex_options,
     "grok": _grok_options,
     "antigravity": _antigravity_options,
@@ -429,6 +517,8 @@ async def sync_backend_options(kind: str) -> BackendOptions:
 
         await sync_claude_models()  # writes the cache that _claude_options reads
         return await _claude_options()
+    if kind == "cursor":
+        return await _cursor_options()  # re-runs agent --list-models
     if kind in ("opencode", "mimo"):
         return await _PROVIDERS[kind](refresh=True)
     provider = _PROVIDERS.get(kind, _codex_options)

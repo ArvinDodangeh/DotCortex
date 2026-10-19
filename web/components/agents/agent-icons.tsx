@@ -205,6 +205,12 @@ export function DeepSeekGlyph({ size = 16, ...props }: GlyphProps) {
   );
 }
 
+export function CursorGlyph({ size = 16, ...props }: GlyphProps) {
+  return (
+    <OfficialAssetGlyph src="/agent-icons/cursor.png" size={size} {...props} />
+  );
+}
+
 // A connected partner: a filled heart in the Partners accent, so a consulted
 // partner reads as a companion (not a CLI) everywhere a connected agent appears.
 export function PartnerGlyph({ size = 16, ...props }: GlyphProps) {
@@ -226,6 +232,7 @@ export type AgentGlyph = ComponentType<GlyphProps>;
 
 export function agentGlyph(kind: string | undefined): AgentGlyph | null {
   if (kind === "claude_code") return ClaudeGlyph;
+  if (kind === "cursor") return CursorGlyph;
   if (kind === "codex") return CodexGlyph;
   if (kind === "grok") return GrokGlyph;
   // Antigravity uses Google's Gemini mark, but Gemini CLI itself is retired.

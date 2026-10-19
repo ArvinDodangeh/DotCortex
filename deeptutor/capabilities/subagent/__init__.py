@@ -1,4 +1,4 @@
-"""Subagent capability — consult a user's live local agent (Claude Code / Codex).
+"""Subagent capability — consult a user's live local agent (Claude Code / Cursor / Codex).
 
 Selected like any connected KB: when the user picks a ``type: subagent`` KB, the
 chat turn runs exclusively on the ``consult_subagent`` tool, driving the live CLI

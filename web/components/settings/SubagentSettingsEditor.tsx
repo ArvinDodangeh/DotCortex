@@ -87,6 +87,15 @@ const KIND_FEATURES: Record<string, KindFeatures> = {
     thinking: false,
     forwardImages: true,
   },
+  cursor: {
+    effort: false,
+    systemPrompt: true,
+    permissionMode: false,
+    codexSandbox: false,
+    autoApprove: true, // --force
+    thinking: false,
+    forwardImages: true, // paths named in the prompt
+  },
   codex: {
     effort: true,
     systemPrompt: false,
@@ -185,6 +194,7 @@ const FALLBACK_FEATURES: KindFeatures = KIND_FEATURES.claude_code;
 
 const DISPLAY_NAMES: Record<string, string> = {
   claude_code: "Claude Code",
+  cursor: "Cursor",
   codex: "Codex",
   grok: "Grok CLI",
   kimi: "Kimi CLI",
@@ -206,6 +216,10 @@ const SYSTEM_PROMPT_HINT: Record<string, Lang> = {
   claude_code: {
     zh: "追加到该智能体的系统提示（--append-system-prompt）。",
     en: "Appended to the agent's system prompt (--append-system-prompt).",
+  },
+  cursor: {
+    zh: "Cursor Agent 没有系统提示 flag——该指令会前缀在每个新会话的第一条消息上。",
+    en: "Cursor Agent has no system-prompt flag — the instruction is prefixed to each new session's first message.",
   },
   kimi: {
     zh: "Kimi CLI 没有系统提示 flag——该指令会前缀在每个新会话的第一条消息上。",

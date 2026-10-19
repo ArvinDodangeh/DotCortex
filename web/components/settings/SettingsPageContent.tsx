@@ -201,6 +201,7 @@ const PAGES: Record<string, React.ComponentType> = {
 };
 const AGENTS = {
   "agent-claude-code": "claude_code",
+  "agent-cursor": "cursor",
   "agent-codex": "codex",
   "agent-grok": "grok",
   "agent-antigravity": "antigravity",

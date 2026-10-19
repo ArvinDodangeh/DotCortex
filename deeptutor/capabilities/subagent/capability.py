@@ -4,7 +4,7 @@ Active whenever the user's selected knowledge base is a connected subagent
 (resolved by :mod:`deeptutor.capabilities.subagent.binding`). As a
 :class:`KnowledgeCapability` it owns the turn: the chat loop runs exclusively on
 the single ``consult_subagent`` tool (plus the ``ask_user`` floor). The chat
-model decides what to ask, asks the local Claude Code / Codex up to the consult
+model decides what to ask, asks the local Claude Code / Cursor / Codex up to the consult
 budget, watches its streamed run, and then answers the user in its own voice.
 
 The connection (which backend, working dir), the per-backend config and the
